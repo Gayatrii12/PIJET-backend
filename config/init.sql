@@ -14,7 +14,7 @@ CREATE TABLE PAPER_REGISTER (
         fk_user_id BIGINT ,
         registration_id BIGSERIAL PRIMARY KEY,
         title_main VARCHAR(255) NOT NULL,
-        abstract VARCHAR(255) NOT NULL,
+        abstract VARCHAR(255) NOT NULL, //keywords , paper domain 
         no_of_authors INT NOT NULL CHECK (no_of_authors > 0),
         status VARCHAR(255) NOT NULL,
         current_version BIGINT NOT NULL,
@@ -31,16 +31,16 @@ CREATE TABLE ISSUES (
         published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_admin_id FOREIGN KEY (fk_admin_id) REFERENCES USERS(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE AUTHOR (
-        fk_registration_id BIGINT,
-        author_id BIGSERIAL PRIMARY KEY,
-        fname VARCHAR(255) NOT NULL,
-        lname VARCHAR(255) NOT NULL,
-        organization VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL ,
-        phone VARCHAR(255) NOT NULL,
-        CONSTRAINT fk_registration_id FOREIGN KEY (fk_registration_id) REFERENCES PAPER_REGISTER(registration_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
+        CREATE TABLE AUTHOR (
+                fk_registration_id BIGINT,
+                author_id BIGSERIAL PRIMARY KEY,
+                fname VARCHAR(255) NOT NULL,
+                lname VARCHAR(255) NOT NULL,
+                organization VARCHAR(255) NOT NULL, 
+                email VARCHAR(255) NOT NULL ,
+                phone VARCHAR(255) NOT NULL, // country
+                CONSTRAINT fk_registration_id FOREIGN KEY (fk_registration_id) REFERENCES PAPER_REGISTER(registration_id) ON DELETE CASCADE ON UPDATE CASCADE
+        );
 CREATE TABLE AUTHORPOSITION (
         fk_author_id BIGINT,
         fk_registration_id INT,
@@ -63,9 +63,9 @@ CREATE TABLE PUBLISHED_PAPER (
 CREATE TABLE VERSION (
         fk_registration_id BIGINT NOT NULL,
         version_id BIGSERIAL PRIMARY KEY,
-        tittle VARCHAR(255) NOT NULL,
+        tittle VARCHAR(255) NOT NULL,// spell change
         paper_url VARCHAR(255) NOT NULL,
-        abstract VARCHAR(255) NOT NULL,
+        -- abstract VARCHAR(255) NOT NULL, // remove
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         comments VARCHAR(255) NOT NULL,
         CONSTRAINT fk_registration_id FOREIGN KEY (fk_registration_id) REFERENCES PAPER_REGISTER(registration_id) ON DELETE CASCADE ON UPDATE CASCADE
