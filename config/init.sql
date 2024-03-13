@@ -65,7 +65,7 @@ CREATE TABLE VERSION (
         version_id BIGSERIAL PRIMARY KEY,
         tittle VARCHAR(255) NOT NULL,// spell change
         paper_url VARCHAR(255) NOT NULL,
-        -- abstract VARCHAR(255) NOT NULL, // remove
+        
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         comments VARCHAR(255) NOT NULL,
         CONSTRAINT fk_registration_id FOREIGN KEY (fk_registration_id) REFERENCES PAPER_REGISTER(registration_id) ON DELETE CASCADE ON UPDATE CASCADE
