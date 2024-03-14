@@ -8,9 +8,7 @@ const uploadPaper = async (req, res, next) => {
     if (!req.body.user_id || !req.body.title_main || !req.body.abstract || !req.body.no_of_authors || !req.body.keywords || !req.body.paper_domain) {
       return res.status(400).json({ error: 'Please fill all the fields' });
     }
-
     const { user_id, title_main, abstract, no_of_authors, keywords, paper_domain } = req.body;
-    
     try {
       const uploadedFile = req.file;
       const paperPath = uploadedFile ? `uploads/${uploadedFile.filename}` : null;
