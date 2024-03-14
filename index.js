@@ -13,6 +13,7 @@ app.use((req, res, next) => {
   });
 
 app.use("/submit", require("./routes/submit"));
+app.use("/admin", require("./routes/fetching"));
 
 const PORT = process.env.PORT || 5000;
 
