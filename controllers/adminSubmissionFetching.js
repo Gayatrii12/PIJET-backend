@@ -1,4 +1,6 @@
 const pool = require("../config/db");
+const path = require("path");
+const fs = require('fs');
 
 const getAllSubmissions = async (req, res) => {
   try {
@@ -17,33 +19,38 @@ const getAllSubmissions = async (req, res) => {
 };
 
 const getPaperById = async (req, res) => {
-    const { paperId } = req.body;
-  
-    // Retrieve paper details from database
-    const paper = await pool.query('SELECT paper_url FROM VERSION WHERE fk_registration_id = $1', [paperId]);
-  
-    if (!paper.rows.length) {
-      return res.status(404).send('Paper not found');
+  const { paperId } = req.body;
+
+  // Retrieve paper details from database
+  const paper = await pool.query(
+    "SELECT paper_url FROM VERSION WHERE fk_registration_id = $1",
+    [paperId]
+  );
+
+  if (!paper.rows.length) {
+    return res.status(404).send("Paper not found");
+  }
+
+  const filePath = path.join(__dirname, "..", paper.rows[0].paper_url); // Construct full path
+
+  try {
+    // Check if file exists on server
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send("File not found");
     }
-  
-    const filePath = path.join(__dirname, '..', paper.rows[0].paper_url);  // Construct full path
-  
-    try {
-      // Check if file exists on server
-      if (!fs.existsSync(filePath)) {
-        return res.status(404).send('File not found');
-      }
-  
-      // Set content type header and other relevant headers (e.g., Content-Disposition for download)
-      res.setHeader('Content-Type', 'application/mp4'); // Adjust content type based on file extension
-      res.setHeader('Content-Disposition', 'attachment; filename="' + paper.rows[0].paper_url + '"');
-  
-      // Stream the file content to the client
-      fs.createReadStream(filePath).pipe(res);
-    } catch (error) {
-      console.error('Error fetching paper:', error);
-      res.status(500).send('Internal server error');
-    }
+
+    // Set content type header and other relevant headers (e.g., Content-Disposition for download)
+    res.setHeader("Content-Type", "application"); // Adjust content type based on file extension
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="' + paper.rows[0].paper_url + '"'
+    );
+
+    // Stream the file content to the client
+    fs.createReadStream(filePath).pipe(res);
+  } catch (error) {
+    console.error("Error fetching paper:", error);
+    res.status(500).send("Internal server error");
+  }
 };
 module.exports = { getAllSubmissions, getPaperById };
-
