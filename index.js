@@ -14,6 +14,8 @@ app.use((req, res, next) => {
 
 app.use("/submit", require("./routes/submit"));
 app.use("/user", require("./routes/userRoutes"));
+app.use("/admin", require("./routes/adminRoutes"));
+
 
 const PORT = process.env.PORT || 5000;
 
