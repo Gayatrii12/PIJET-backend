@@ -31,7 +31,7 @@ CREATE TABLE ISSUES (
         published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_admin_id FOREIGN KEY (fk_admin_id) REFERENCES USERS(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-        CREATE TABLE AUTHOR (
+CREATE TABLE AUTHOR (
                 fk_registration_id BIGINT,
                 author_id BIGSERIAL PRIMARY KEY,
                 fname VARCHAR(255) NOT NULL,
